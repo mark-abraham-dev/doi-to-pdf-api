@@ -1,0 +1,50 @@
+{
+  "name": "doi-to-pdf-api",
+  "version": "1.0.0",
+  "description": "API that extracts full text content from academic papers using DOIs.",
+  "main": "dist/lambda.js",
+  "scripts": {
+    "start": "ts-node src/lambda.ts",
+    "dev": "cross-env NODE_ENV=development nodemon --exec ts-node src/lambda.ts",
+    "build": "tsc",
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean",
+    "lint": "eslint 'src/**/*.{js,ts}'",
+    "lint:fix": "eslint 'src/**/*.{js,ts}' --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "check-types": "tsc --noEmit",
+    "serverless:offline": "serverless offline",
+    "deploy:dev": "serverless deploy --stage dev",
+    "deploy:prod": "serverless deploy --stage prod",
+    "remove:dev": "serverless remove --stage dev",
+    "remove:prod": "serverless remove --stage prod",
+    "logs:dev": "serverless logs -f api -t --stage dev",
+    "logs:prod": "serverless logs -f api -t --stage prod",
+    "prepare": "husky install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-serverless-express": "^3.4.0",
+    "axios": "^1.8.4",
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.1.0",
+    "node-cache": "^5.1.2",
+    "pdf-parse": "^1.1.1",
+    "pdf.js-extract": "^0.2.1",
+    "serverless-http": "^3.2.0",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/pdf-parse": "^1.1.5"
+  }
+}
