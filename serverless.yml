@@ -16,6 +16,7 @@ provider:
     RATE_LIMIT_WINDOW_MS: "60000"
     RATE_LIMIT_MAX_REQUESTS: "10"
     TEXT_EXTRACTION_ENABLED: "true"
+  logRetentionInDays: 14
 
 functions:
   api:
@@ -30,13 +31,20 @@ plugins:
   - serverless-esbuild
   - serverless-offline
 
+package:
+  individually: true
+
 custom:
   esbuild:
     bundle: true
-    minify: false
-    sourcemap: true
-    exclude: ["aws-sdk"]
-    target: "node18"
-    platform: "node"
-    define:
-      "process.env.NODE_ENV": JSON.stringify('${self:provider.stage}')
+    minify: ${self:provider.stage == 'prod', false}
+    sourcemap: ${self:provider.stage != 'prod', true}
+    exclude:
+      - aws-sdk
+    external:
+      - pdf-parse
+    platform: node
+    target: node18
+  serverless-offline:
+    httpPort: 3000
+    noPrependStageInUrl: true
