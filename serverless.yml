@@ -1,20 +1,21 @@
 service: doi-pdf-api
 
-# Update memory size for Lambda to handle PDF processing
+frameworkVersion: "3"
+
 provider:
   name: aws
   runtime: nodejs18.x
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
-  memorySize: 1024 # Increase memory size for PDF processing
-  timeout: 60 # Increase timeout for longer processing
-  logRetentionInDays: 30
+  memorySize: 2048
+  timeout: 30
   environment:
     NODE_ENV: ${self:provider.stage}
-    CACHE_ENABLED: true
-    CACHE_TTL: 86400 # 24 hours in seconds
-    RATE_LIMIT_WINDOW_MS: 60000 # 1 minute
-    RATE_LIMIT_MAX_REQUESTS: 10 # 10 requests per minute
+    CACHE_ENABLED: "true"
+    CACHE_TTL: "86400"
+    RATE_LIMIT_WINDOW_MS: "60000"
+    RATE_LIMIT_MAX_REQUESTS: "10"
+    TEXT_EXTRACTION_ENABLED: "true"
 
 functions:
   api:
@@ -26,9 +27,16 @@ functions:
           cors: true
 
 plugins:
-  - serverless-plugin-typescript
+  - serverless-esbuild
   - serverless-offline
 
 custom:
-  serverless-offline:
-    httpPort: 3000
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    exclude: ["aws-sdk"]
+    target: "node18"
+    platform: "node"
+    define:
+      "process.env.NODE_ENV": JSON.stringify('${self:provider.stage}')
