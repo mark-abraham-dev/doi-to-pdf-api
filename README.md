@@ -310,7 +310,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [Express.js](https://expressjs.com/)
 - [Serverless Framework](https://www.serverless.com/)
 - [pdf-parse](https://www.npmjs.com/package/pdf-parse)
-- [pdf.js-extract](https://www.npmjs.com/package/pdf.js-extract)
 
 ---
 
